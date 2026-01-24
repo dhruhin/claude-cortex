@@ -27,9 +27,10 @@ This repository provides:
    git clone https://github.com/your-username/claude-cortex.git
    ```
 
-2. Create a symlink so Claude Code finds the config:
+2. Create the `.claude/` directory and symlink the skills:
    ```bash
-   ln -s claude-cortex/.claude .claude
+   mkdir -p .claude
+   ln -s ../claude-cortex/.claude/skills .claude/skills
    ```
 
 3. Copy and customize the templates:
@@ -46,15 +47,23 @@ This repository provides:
 
 5. Verify setup by running `/process` in Claude Code.
 
-### For an Existing Vault
+### For an Existing Vault with Claude Code
 
-Follow the same steps, but adjust your existing structure to match the expected directories.
+If you already have a `.claude/` directory from Claude Code:
+
+```bash
+# Just symlink the skills directory
+ln -s ../claude-cortex/.claude/skills .claude/skills
+```
+
+Your existing `.claude/settings.local.json` and other Claude Code files will be preserved.
 
 ## Directory Structure
 
 ```
 your-vault/
-├── .claude -> claude-cortex/.claude  # Symlink
+├── .claude/
+│   └── skills -> ../claude-cortex/.claude/skills  # Symlink
 ├── CLAUDE.md                         # Vault instructions
 ├── Tags.md                           # Tag registry
 ├── Tasks.md                          # Quick capture + task views
