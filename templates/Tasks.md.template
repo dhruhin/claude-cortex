@@ -1,0 +1,40 @@
+---
+created: {{date}}
+updated: {{date}}
+tags: [tasks]
+---
+
+# Tasks
+
+## Capture
+
+Quick entry section. Add tasks here, then run `/process` to route them.
+
+- [ ]
+
+---
+
+## Active (p0 + p1)
+
+```tasks
+not done
+(priority is highest) OR (priority is high)
+sort by due
+sort by priority
+```
+
+## Backlog (p2 + p3)
+
+```tasks
+not done
+(priority is medium) OR (priority is low) OR (priority is none)
+sort by priority
+```
+
+## Recently Completed
+
+```tasks
+done
+sort by done reverse
+limit 10
+```
