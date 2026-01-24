@@ -1,7 +1,9 @@
 ---
 name: process
 description: Process captured tasks and inbox items, routing them to appropriate locations in the vault. Use when user wants to organize their captures.
-allowed-tools: Read, Write, Edit, Glob, Grep
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash
+created: 2026-01-24T11:04
+updated: 2026-01-24T12:26
 ---
 
 # Process
@@ -196,3 +198,36 @@ Items needing clarification: X
 Backlinks suggested: X
   → [[Note1]] ↔ [[Note2]]
 ```
+
+---
+
+## Auto-Commit (Checkpoint)
+
+After every `/process` run, automatically commit changes to both repositories to checkpoint the information.
+
+### Steps
+
+1. **Commit second-brain changes** (if any):
+   ```bash
+   cd /path/to/second-brain
+   git add -A
+   git commit -m "process: [summary of processed items]"
+   ```
+
+2. **Commit claude-cortex changes** (if any):
+   ```bash
+   cd /path/to/claude-cortex
+   git add -A
+   git commit -m "process: checkpoint"
+   ```
+
+### Commit Message Format
+
+- For second-brain: `process: X tasks, Y inbox items processed`
+- For claude-cortex: `process: checkpoint`
+
+### Notes
+
+- Only commit if there are actual changes (check `git status` first)
+- Do not push automatically - commits are local checkpoints
+- Include the checkpoint status in the Processing Report
