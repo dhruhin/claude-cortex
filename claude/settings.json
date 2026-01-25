@@ -10,13 +10,13 @@
     ]
   },
   "hooks": {
-    "PostToolUse": [
+    "Stop": [
       {
-        "matcher": "Write|Edit",
+        "matcher": "*",
         "hooks": [
           {
-            "type": "command",
-            "command": "cd \"$CLAUDE_PROJECT_DIR\" && git add -A && git diff --cached --quiet || git commit -m \"auto: vault update\""
+            "type": "prompt",
+            "prompt": "Check for uncommitted git changes in the vault. If uncommitted or unstaged changes exist: 1) Run git status and git diff --stat to see what changed 2) Generate a descriptive commit message based on the actual changes (e.g., 'Add task: review PR', 'Route meeting notes to Projects/Alpha', 'Process 3 inbox items') 3) Stage all changes with git add -A 4) Commit with the generated message. Also check claude-cortex subdirectory for changes and commit there too if needed. Return 'approve' when done or if no changes exist."
           }
         ]
       }

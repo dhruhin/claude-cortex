@@ -1,6 +1,6 @@
 ---
 created: 2026-01-24T17:08
-updated: 2026-01-24T17:08
+updated: 2026-01-24T22:46
 ---
 # Claude Cortex
 
@@ -164,18 +164,18 @@ Commits vault changes to git with a descriptive message.
 
 ## Hooks
 
-Claude Cortex includes a PostToolUse hook that auto-commits after Write/Edit operations:
+Claude Cortex includes a Stop hook that commits changes when Claude finishes working:
 
 ```json
 {
   "hooks": {
-    "PostToolUse": [
+    "Stop": [
       {
-        "matcher": "Write|Edit",
+        "matcher": "*",
         "hooks": [
           {
-            "type": "command",
-            "command": "cd \"$CLAUDE_PROJECT_DIR\" && git add -A && git diff --cached --quiet || git commit -m \"auto: vault update\""
+            "type": "prompt",
+            "prompt": "Check for uncommitted git changes in the vault. If uncommitted or unstaged changes exist: 1) Run git status and git diff --stat to see what changed 2) Generate a descriptive commit message based on the actual changes 3) Stage all changes with git add -A 4) Commit with the generated message. Return 'approve' when done or if no changes exist."
           }
         ]
       }
@@ -184,7 +184,7 @@ Claude Cortex includes a PostToolUse hook that auto-commits after Write/Edit ope
 }
 ```
 
-This ensures changes are checkpointed automatically. Commits are local only — push manually when ready.
+This ensures changes are checkpointed with intelligent commit messages when Claude finishes. Commits are local only — push manually when ready.
 
 ## Templates
 
