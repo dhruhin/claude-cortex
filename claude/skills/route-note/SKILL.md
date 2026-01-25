@@ -1,9 +1,9 @@
 ---
 name: route-note
 description: Route an idea or note to the knowledge base. Use for thoughts, research, and reference material.
-allowed-tools: Read, Write, Edit, Glob, Grep
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 created: 2026-01-24T17:05
-updated: 2026-01-24T17:06
+updated: 2026-01-25T00:55
 ---
 
 # Route Note

@@ -1,9 +1,9 @@
 ---
 name: route-journal
 description: Route personal reflections and daily entries to the journal. Use for daily logs, reflections, and personal notes.
-allowed-tools: Read, Write, Edit, Glob, Grep
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 created: 2026-01-24T17:05
-updated: 2026-01-24T17:06
+updated: 2026-01-25T00:56
 ---
 
 # Route Journal

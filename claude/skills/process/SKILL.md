@@ -1,9 +1,9 @@
 ---
 name: process
 description: Process captured tasks and inbox items, routing them to appropriate locations in the vault. Use when user wants to organize their captures.
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Skill
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Skill, Task
 created: 2026-01-24T11:04
-updated: 2026-01-25T00:30
+updated: 2026-01-25T00:55
 ---
 
 # Process
@@ -32,8 +32,15 @@ Read all Inbox/ files
 For each item:
     ├── Classify content type (with confidence score)
     ├── If confidence < 70% → Ask user to classify
-    ├── If destination unclear → Ask user (with cancel option)
-    └── Delegate to appropriate /route-* skill
+    └── If destination unclear → Ask user (with cancel option)
+    ↓
+Spawn parallel subagents for all classified items
+    ├── Each subagent runs one /route-* skill
+    └── All routing happens concurrently
+    ↓
+Collect results from all subagents
+    ↓
+Clear processed items (Tasks.md, Inbox/)
     ↓
 Run /commit to checkpoint changes
     ↓
@@ -41,6 +48,8 @@ Output processing report
     ↓
 Sync semantic index (background)
 ```
+
+**Performance**: By using parallel subagents, processing N items takes roughly the same time as processing 1 item, rather than N× the time.
 
 ---
 
@@ -103,40 +112,85 @@ What type is this?
 
 ---
 
-## Step 3: Route Items
+## Step 3: Route Items (Parallel Subagents)
 
-For each classified item, invoke the appropriate route skill:
+After classifying all items, spawn parallel subagents to route them concurrently.
+
+### Subagent Strategy
+
+Use the `Task` tool with `subagent_type: general-purpose` to spawn routing subagents. **Launch all subagents in a single message** to enable parallel execution.
 
 ```
-Task → /route-task "[content]"
-Person Task → /route-person-task "[person]" "[content]"
-Project Note (italic) → /route-project-update "[content]" (as note, not task)
-Project Update → /route-project-update "[content]"
-Meeting Notes → /route-meeting "[content]"
-Idea/Note → /route-note "[content]"
-Journal Entry → /route-journal "[content]"
-Context Update → /route-context "[content]"
+For each classified item, spawn a subagent:
+    Task tool:
+      subagent_type: general-purpose
+      prompt: "Route this [type] to the vault using /route-[type]:
+               Content: [content]
+               Source: [file path or Tasks.md]
+               Delete source file after successful routing."
 ```
 
-Note: Tasks with both a project and person context use `/route-task` which adds person backlinks.
-Person-only tasks (no project) use `/route-person-task` directly.
+### Example: Processing 4 Items in Parallel
 
-If item came from an inbox file, pass the file path:
+If you have classified:
+- Item 1: Task → route-task
+- Item 2: Meeting notes → route-meeting
+- Item 3: Journal entry → route-journal
+- Item 4: Task → route-task
+
+Spawn 4 subagents in **one message with 4 Task tool calls**:
+
 ```
-/route-task Inbox/2026-01-24T10:30:00Z.md
+Task 1: "Route task to vault using /route-task: 'review PR for auth feature p0'"
+Task 2: "Route meeting notes using /route-meeting: [content from Inbox/meeting.md], delete Inbox/meeting.md after"
+Task 3: "Route journal entry using /route-journal: 'Felt productive today...'"
+Task 4: "Route task to vault using /route-task: 'update docs by friday'"
 ```
+
+### Subagent Prompts by Type
+
+| Type | Subagent Prompt |
+|------|-----------------|
+| Task | Route this task to the vault using /route-task: "[content]" |
+| Person Task | Route this person task using /route-person-task "[person]" "[content]" |
+| Project Note | Route this project note using /route-project-update: "[content]" |
+| Project Update | Route this project update using /route-project-update: "[content]" |
+| Meeting Notes | Route these meeting notes using /route-meeting: "[content]". Source file: [path] |
+| Idea/Note | Route this note using /route-note: "[content]". Source file: [path] |
+| Journal Entry | Route this journal entry using /route-journal: "[content]" |
+| Context Update | Route this context update using /route-context: "[content]" |
+
+### Handling Inbox Files
+
+For items from `Inbox/` files, include the file path in the subagent prompt:
+```
+"Route using /route-meeting. Content: [content].
+Source file: Inbox/2026-01-24T10:30:00Z.md - delete after successful routing."
+```
+
+### Collecting Results
+
+After all subagents complete:
+1. Check each subagent's result for success/failure
+2. Track which items were routed successfully
+3. Track which items failed (these remain in original location)
+4. Use results to build the processing report
 
 ---
 
 ## Step 4: Clear Processed Items
 
+After all subagents complete successfully:
+
 ### Tasks.md
-After routing all tasks, clear the Capture section:
+Clear the Capture section:
 - Keep only the empty `- [ ]` placeholder
+- Only clear items that were successfully routed (based on subagent results)
 
 ### Inbox/
-- Route skills delete inbox files after successful routing
-- Verify files are deleted
+- Subagents handle inbox file deletion after successful routing
+- Verify files are deleted by listing `Inbox/` directory
+- Any remaining files indicate failed routes
 
 ---
 

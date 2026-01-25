@@ -1,9 +1,9 @@
 ---
 name: route-meeting
 description: Route meeting notes to the appropriate location. Use for call notes, sync summaries, and meeting content.
-allowed-tools: Read, Write, Edit, Glob, Grep
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 created: 2026-01-24T17:05
-updated: 2026-01-24T17:06
+updated: 2026-01-25T00:55
 ---
 
 # Route Meeting

@@ -1,9 +1,9 @@
 ---
 name: route-context
 description: Update personal context files with new information. Use for updates about yourself, preferences, work details.
-allowed-tools: Read, Write, Edit, Glob, Grep
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 created: 2026-01-24T17:05
-updated: 2026-01-24T17:06
+updated: 2026-01-25T00:56
 ---
 
 # Route Context

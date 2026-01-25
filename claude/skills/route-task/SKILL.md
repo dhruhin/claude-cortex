@@ -1,9 +1,9 @@
 ---
 name: route-task
 description: Parse and route a task to the appropriate location. Use for individual task processing.
-allowed-tools: Read, Write, Edit, Glob, Grep, Skill
+allowed-tools: Read, Write, Edit, Glob, Grep, Skill, Bash
 created: 2026-01-24T17:05
-updated: 2026-01-25T00:30
+updated: 2026-01-25T00:56
 ---
 
 # Route Task

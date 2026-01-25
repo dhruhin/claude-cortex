@@ -1,9 +1,9 @@
 ---
 name: route-person-task
 description: Route a task to a person's Details/current.md file. Use for person-only tasks without project context.
-allowed-tools: Read, Write, Edit, Glob, Grep, Skill
+allowed-tools: Read, Write, Edit, Glob, Grep, Skill, Bash
 created: 2026-01-25T00:28
-updated: 2026-01-25T00:28
+updated: 2026-01-25T00:56
 ---
 
 # Route Person Task
