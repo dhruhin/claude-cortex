@@ -23,6 +23,8 @@ Quick entry section. Add tasks here, then run `/process` to route them.
 ```tasks
 not done
 (priority is highest) OR (priority is high)
+path does not include Tasks
+is not a subtask
 sort by due
 sort by priority
 ```
@@ -32,6 +34,8 @@ sort by priority
 ```tasks
 not done
 (priority is medium) OR (priority is low) OR (priority is none)
+path does not include Tasks
+is not a subtask
 sort by priority
 ```
 
@@ -39,6 +43,8 @@ sort by priority
 
 ```tasks
 done
+path does not include Tasks
+is not a subtask
 sort by done reverse
 limit 10
 ```

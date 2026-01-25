@@ -8,93 +8,56 @@ updated: 2026-01-25T00:55
 
 # Route Note
 
-Routes ideas and notes to the appropriate location in the knowledge base.
+Routes ideas and notes to the knowledge base organized by Johnny.Decimal.
 
 ## Usage
 
 ```
-/route-note "Interesting pattern: microservices work best with clear domain boundaries"
+/route-note "Microservices work best with clear domain boundaries"
 /route-note Inbox/2026-01-24T10:30:00Z.md
 ```
 
-## Input
+## Steps
 
-- **Text**: Idea, thought, or note content
-- **File path**: Path to an inbox file containing note content
-
-## Processing Steps
-
-1. **Classify by Johnny.Decimal category**:
-   - Analyze content to determine best category
-   - If unsure → Ask user to select category
-
-2. **Determine note type**:
-   - **Fleeting**: Quick thought, needs processing later
-   - **Literature**: Notes from reading/research with source
-   - **Permanent**: Refined, standalone insight
-
-3. **Generate title**:
-   - Create concise, descriptive title from content
-   - Use sentence case
-
-4. **Determine destination**:
-   - `Resources/Notes/NN-NN Category/Title.md`
-
-5. **Format the note**:
-   - Add frontmatter with tags and type
-   - Structure content appropriately
-   - Suggest related notes/backlinks
-
-6. **Route the note**:
-   - Create new note file in appropriate category
-   - Update frontmatter with `related` field for connections
-
-7. **Clean up**:
-   - If input was an inbox file, delete it after routing
+1. **Classify by Johnny.Decimal** (ask if unsure)
+2. **Determine type**: fleeting, literature, or permanent
+3. **Generate title** from content (sentence case)
+4. **Route to**: `Resources/Notes/NN-NN Category/Title.md`
+5. **Suggest backlinks** from related notes
+6. **Clean up**: Delete inbox file if applicable
 
 ## Johnny.Decimal Categories
 
 ```
-00-09 Relationships
-10-19 Career
-20-29 Technology
-30-39 Money
-40-49 Health
-50-59 Life Logistics
-60-69 Business
-70-79 Learning
-80-89 History
-90-99 Media
+00-09 Relationships    50-59 Life Logistics
+10-19 Career           60-69 Business
+20-29 Technology       70-79 Learning
+30-39 Money            80-89 History
+40-49 Health           90-99 Media
 ```
 
-## Note Templates
+## Templates
 
 ### Fleeting Note
-
 ```markdown
 ---
 created: YYYY-MM-DDTHH:mm
 updated: YYYY-MM-DDTHH:mm
 tags: [fleeting]
 type: fleeting
-source: inbox
 related: []
 ---
 
 # Title
 
-Content of the thought or idea.
+Content.
 
 ---
-
 ## To Process
-
-- [ ] Develop this idea further
-- [ ] Find related concepts
+- [ ] Develop further
 ```
 
 ### Literature Note
-
 ```markdown
 ---
 created: YYYY-MM-DDTHH:mm
@@ -115,7 +78,6 @@ related: []
 ```
 
 ### Permanent Note
-
 ```markdown
 ---
 created: YYYY-MM-DDTHH:mm
@@ -127,19 +89,8 @@ related: []
 
 # Title
 
-Clear, standalone explanation of the concept.
+Standalone explanation.
 
 ## Related Ideas
-
-- [[Related Note 1]]
-- [[Related Note 2]]
+- [[Related Note]]
 ```
-
-## Suggesting Backlinks
-
-After creating the note, search for:
-- Notes with similar tags
-- Notes mentioning similar concepts
-- Notes in the same category
-
-Suggest adding these to the `related` field.
