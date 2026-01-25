@@ -1,7 +1,11 @@
 ---
-created: {{date}}
-updated: {{date}}
-tags: [meta]
+created:
+  "{ date }":
+updated:
+  "{ date }":
+tags:
+  - meta
+related: []
 ---
 
 # Tags

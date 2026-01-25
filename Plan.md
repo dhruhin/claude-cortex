@@ -1,16 +1,22 @@
+---
+created: 2026-01-24T17:04
+updated: 2026-01-24T17:09
+---
 # Claude Cortex Implementation Plan
 
 This document provides detailed instructions for setting up and using the Claude Cortex bootstrap.
 
 ## Overview
 
-Claude Cortex is a shareable configuration that turns any Obsidian vault into an AI-powered Second Brain. The core principle is **capture fast, process later**.
+Claude Cortex is a shareable configuration that turns any Obsidian vault into an AI-powered knowledge system. The core principle is **capture fast, process later**.
 
 ## Architecture
 
 ```
 your-vault/                          # Your Obsidian vault (its own git repo)
-├── .claude -> claude-cortex/.claude # Symlink to bootstrap config
+├── .claude/
+│   ├── skills -> ../claude-cortex/claude/skills  # Symlink to skills
+│   └── settings.json                # Copy or merge from claude-cortex
 ├── CLAUDE.md                        # Vault-specific instructions
 ├── Tags.md                          # Global tag registry
 ├── Tasks.md                         # Quick capture + task queries
@@ -24,23 +30,83 @@ your-vault/                          # Your Obsidian vault (its own git repo)
     └── Notes/                       # Knowledge base
 │
 └── claude-cortex/                   # This bootstrap (separate git repo)
-    ├── .claude/
+    ├── claude/
     │   ├── settings.json
-    │   └── skills/process/SKILL.md
+    │   └── skills/
+    │       ├── process/
+    │       ├── route-task/
+    │       ├── route-project-update/
+    │       ├── route-meeting/
+    │       ├── route-note/
+    │       ├── route-journal/
+    │       ├── route-context/
+    │       └── commit/
     ├── templates/
+    ├── .claude-temp/                # Git-ignored working directory
     ├── README.md
     ├── Plan.md
     └── LICENSE
 ```
 
+## Skills Architecture
+
+### Orchestrator: `/process`
+
+Reads from `Inbox/` and `Tasks.md`, classifies content, delegates to route skills.
+
+```
+User runs /process
+    ↓
+Read Inbox/ files + Tasks.md Capture section
+    ↓
+For each item:
+    ├── Classify content type (confidence score)
+    ├── If confidence < 70% → prompt user
+    ├── If destination unclear → prompt user (with cancel option)
+    └── Call appropriate /route-* skill
+    ↓
+Run /commit to checkpoint
+```
+
+### Route Skills
+
+| Skill | Input | Output |
+|-------|-------|--------|
+| `/route-task` | Task text or file | Parsed task → project weekly or daily journal |
+| `/route-project-update` | Update text or file | Append → project's weekly Details file |
+| `/route-meeting` | Meeting notes or file | → project meeting folder or journal |
+| `/route-note` | Idea/note or file | Classify by Johnny.Decimal → Resources/Notes |
+| `/route-journal` | Journal text or file | Append → daily journal |
+| `/route-context` | Context update or file | Update → Context/ files |
+
+### Utility Skills
+
+| Skill | Trigger | Behavior |
+|-------|---------|----------|
+| `/commit` | Manual or via /process | Commit changes to vault repo, describe what changed |
+
+### Direct Invocation
+
+Skills accept arguments directly:
+```
+/route-task "buy milk by friday p1"
+/route-note "interesting idea about X"
+/route-journal "Today I learned about Y"
+```
+
+Or process a specific file:
+```
+/route-meeting Inbox/2026-01-24T10:30:00Z.md
+```
+
 ## Symlink Strategy
 
-The root `.claude/` folder is a **symlink** pointing to `claude-cortex/.claude/`. This means:
+The `.claude/skills` folder is a **symlink** pointing to `claude-cortex/claude/skills`. This means:
 
-- Claude Code finds its config at the expected location (`.claude/`)
-- The actual config lives in the shareable `claude-cortex/` repo
-- Updates to `claude-cortex/` automatically apply to the vault
-- Other users can clone `claude-cortex/` and symlink it into their own vaults
+- Claude Code finds skills at the expected location
+- Updates to `claude-cortex/` automatically apply
+- Settings can be customized per-vault
+- Other users can clone `claude-cortex/` and symlink into their vaults
 
 ## Git Strategy
 
@@ -55,29 +121,25 @@ The parent vault's `.gitignore` should exclude `claude-cortex/` since it has its
 
 ## Installation Steps
 
-### Step 1: Clone or Copy claude-cortex
+### Step 1: Clone claude-cortex
 
 ```bash
 cd "your-vault/"
 git clone https://github.com/your-username/claude-cortex.git
 ```
 
-Or if already inside a vault:
-```bash
-# If claude-cortex is a subdirectory, it's already there
-```
-
-### Step 2: Create Symlink
+### Step 2: Set Up Claude Directory
 
 ```bash
-cd "your-vault/"
-ln -s claude-cortex/.claude .claude
+mkdir -p .claude
+ln -s ../claude-cortex/claude/skills .claude/skills
+cp claude-cortex/claude/settings.json .claude/settings.json
 ```
 
 Verify it works:
 ```bash
-ls -la .claude
-# Should show: .claude -> claude-cortex/.claude
+ls -la .claude/skills
+# Should show: skills -> ../claude-cortex/claude/skills
 ```
 
 ### Step 3: Create Vault Structure
@@ -100,9 +162,9 @@ mkdir -p "Resources/Notes/90-99 Media"
 ### Step 4: Copy Templates
 
 ```bash
-cp claude-cortex/templates/CLAUDE.md.template CLAUDE.md
-cp claude-cortex/templates/Tags.md.template Tags.md
-cp claude-cortex/templates/Tasks.md.template Tasks.md
+cp claude-cortex/templates/CLAUDE.md CLAUDE.md
+cp claude-cortex/templates/Tags.md Tags.md
+cp claude-cortex/templates/Tasks.md Tasks.md
 ```
 
 Edit `CLAUDE.md` to customize for your vault.
@@ -135,7 +197,13 @@ git commit -m "Initial vault setup with Claude Cortex"
    - Tasks get formatted and routed to projects or daily notes
    - Inbox items get classified and filed appropriately
 
-4. **View your tasks**: Open `Tasks.md` to see Active, Backlog, and Completed views
+4. **Direct routing**: Use `/route-*` skills for immediate routing
+   ```
+   /route-task "buy milk by friday p1"
+   /route-journal "Today I learned about X"
+   ```
+
+5. **View your tasks**: Open `Tasks.md` to see Active, Backlog, and Completed views
 
 ### Task Syntax
 
@@ -186,13 +254,45 @@ All processed files should have:
 created: YYYY-MM-DDTHH:mm
 updated: YYYY-MM-DDTHH:mm
 tags: []
+related: []
 ---
 ```
+
+The `related` field contains wiki-links to connected files:
+- Format: `["[[Project Alpha]]", "[[Meeting 2026-01-20]]"]`
+- Auto-populated by Claude when creating/processing files
+- Obsidian's native backlinks handle the reverse direction
 
 Additional fields by type:
 - **Weekly details**: `week: Www`
 - **Notes**: `type: fleeting|literature|permanent`, `source: inbox`
 - **Projects**: `status: active|archived`
+
+---
+
+## Auto-Commit Hook
+
+The settings.json includes a PostToolUse hook that auto-commits after Write/Edit:
+
+```json
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd \"$CLAUDE_PROJECT_DIR\" && git add -A && git diff --cached --quiet || git commit -m \"auto: vault update\""
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+This ensures all changes are checkpointed. Commits are local only — push manually when ready.
 
 ---
 
@@ -205,7 +305,7 @@ cd claude-cortex/
 git pull origin main
 ```
 
-Changes automatically apply through the symlink.
+Changes to skills automatically apply through the symlink.
 
 ---
 
@@ -215,17 +315,23 @@ Changes automatically apply through the symlink.
 
 Check the symlink:
 ```bash
-ls -la .claude
+ls -la .claude/skills
 ```
 
-Should show `.claude -> claude-cortex/.claude`
+Should show `skills -> ../claude-cortex/claude/skills`
 
-### /process skill not found
+### Skill not found
 
-Ensure the symlink is correct and the skill file exists:
+Ensure the skill file exists:
 ```bash
-cat .claude/skills/process/SKILL.md
+ls .claude/skills/
 ```
+
+### Auto-commit not working
+
+1. Verify your vault is a git repository: `git status`
+2. Check the hook is in `.claude/settings.json`
+3. Ensure `CLAUDE_PROJECT_DIR` is set by Claude Code
 
 ### Tasks not appearing in views
 

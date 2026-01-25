@@ -1,4 +1,8 @@
-# Second Brain - Claude Instructions
+---
+created: 2026-01-24T17:04
+updated: 2026-01-24T17:07
+---
+# Claude Instructions
 
 ## Purpose
 
@@ -36,6 +40,7 @@ When I mention:
 created: YYYY-MM-DDTHH:mm
 updated: YYYY-MM-DDTHH:mm
 tags: []
+related: []
 ---
 ```
 

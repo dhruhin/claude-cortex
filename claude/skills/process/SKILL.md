@@ -1,14 +1,14 @@
 ---
 name: process
 description: Process captured tasks and inbox items, routing them to appropriate locations in the vault. Use when user wants to organize their captures.
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Skill
 created: 2026-01-24T11:04
-updated: 2026-01-24T12:26
+updated: 2026-01-24T17:06
 ---
 
 # Process
 
-The single skill that processes all captured content in your Second Brain.
+Orchestrator skill that processes all captured content in your vault by classifying and delegating to specialized route skills.
 
 ## Trigger
 
@@ -21,96 +21,148 @@ User runs `/process`
 
 ---
 
-## Task Processing
-
-### Input Location
-
-`Tasks.md` → "## Capture" section (skip the first empty `- [ ]` placeholder)
-
-### Steps
-
-1. Read each task line in Capture section (after the empty placeholder)
-2. Parse for:
-   - **Priority**: Look for p0/p1/p2/p3 (default: p1)
-   - **Due date**: Look for dates like "01/25", "tomorrow", "next week", "by friday"
-   - **Project**: Match keywords against active projects in `Projects/`
-3. Convert to Obsidian Tasks format:
-   - Priority symbol: p0=⏫⏫, p1=⏫, p2=🔼, p3=🔽
-   - `📅 YYYY-MM-DD` for due date (if specified)
-   - `➕ YYYY-MM-DD` for capture date (today)
-   - `[[Project_Name]]` for project link (if matched)
-4. Route the task:
-   - **Has project** → Append to `Projects/[Name]/Details/YYYY-MM-DD-Www.md`
-   - **No project** → Append to `Resources/Journal/YYYY/MM/DD.md`
-5. Clear the Capture section (keep only the empty `- [ ]` placeholder)
-
-### Priority Symbols
-
-| Priority | Symbol | Meaning | View |
-|----------|--------|---------|------|
-| p0 | ⏫⏫ | Urgent, do today | Active |
-| p1 | ⏫ | Important, do this week (default) | Active |
-| p2 | 🔼 | Should do soon | Backlog |
-| p3 | 🔽 | Nice to have | Backlog |
-
-### Example Transformation
+## Processing Flow
 
 ```
-Input:  "review PR for auth feature by friday p0"
-Output: "- [ ] review PR for auth feature ⏫⏫ 📅 2026-01-24 ➕ 2026-01-24 [[Auth_Migration]]"
-Routed: Projects/Auth_Migration/Details/2026-01-20-W04.md
+/process
+    ↓
+Read Tasks.md Capture section
+Read all Inbox/ files
+    ↓
+For each item:
+    ├── Classify content type (with confidence score)
+    ├── If confidence < 70% → Ask user to classify
+    ├── If destination unclear → Ask user (with cancel option)
+    └── Delegate to appropriate /route-* skill
+    ↓
+Run /commit to checkpoint changes
+    ↓
+Output processing report
 ```
 
 ---
 
-## Inbox Processing
+## Step 1: Read Inputs
 
-### Input Location
+### Tasks.md
+- Read "## Capture" section
+- Skip the first empty `- [ ]` placeholder
+- Each non-empty line is a task to process
 
-All files in `Inbox/`
+### Inbox/
+- List all files in `Inbox/`
+- Read each file's content
 
-### Classification Categories
+---
 
-1. **Task** (action item detected)
-   → Parse and route like task processing above
+## Step 2: Classify Each Item
 
-2. **Project Update** (references active project)
-   → Append to project's current week Details file
-   → Add frontmatter, suggest tags
+For each item, determine its type:
 
-3. **Meeting Notes** (meeting/call/sync detected)
-   → If project context: `Projects/[Name]/Meetings/YYYY-MM-DD-Title.md`
-   → If no project: `Resources/Journal/YYYY/MM/DD.md` under ## Meetings
-
-4. **Idea/Note** (general knowledge)
-   → Classify by Johnny.Decimal category
-   → Determine type: fleeting or literature
-   → Create in `Resources/Notes/NN-NN Category/`
-   → Suggest backlinks to related notes
-
-5. **Journal Entry** (personal reflection, day summary)
-   → Append to `Resources/Journal/YYYY/MM/DD.md`
-
-6. **Context Update** (info about me, my work, preferences)
-   → Update relevant file in `Context/`
+| Type | Indicators | Route Skill |
+|------|------------|-------------|
+| Task | Action verbs, "p0-p3", due dates | `/route-task` |
+| Project Update | References active project, status update | `/route-project-update` |
+| Meeting Notes | "meeting", "call", "sync", attendee mentions | `/route-meeting` |
+| Idea/Note | General knowledge, concepts, ideas | `/route-note` |
+| Journal Entry | Personal reflection, "today I", feelings | `/route-journal` |
+| Context Update | "I am", "my job", personal info | `/route-context` |
 
 ### Confidence Threshold
 
-If classification confidence < 70%, ask user to clarify before routing.
+If classification confidence < 70%, present options to user:
 
-### After Processing
+```
+Unable to confidently classify this item:
+"[content preview]"
 
-- Add proper frontmatter to destination file
-- Add relevant tags from `Tags.md`
-- Suggest backlinks based on content similarity
-- Delete the inbox file after processing
-- Report summary of what was processed
+What type is this?
+1. Task
+2. Project Update
+3. Meeting Notes
+4. Idea/Note
+5. Journal Entry
+6. Context Update
+7. Skip (leave in inbox)
+```
 
 ---
 
-## Johnny.Decimal Categories
+## Step 3: Route Items
 
-Use these for routing ideas/notes to `Resources/Notes/`:
+For each classified item, invoke the appropriate route skill:
+
+```
+Task → /route-task "[content]"
+Project Update → /route-project-update "[content]"
+Meeting Notes → /route-meeting "[content]"
+Idea/Note → /route-note "[content]"
+Journal Entry → /route-journal "[content]"
+Context Update → /route-context "[content]"
+```
+
+If item came from an inbox file, pass the file path:
+```
+/route-task Inbox/2026-01-24T10:30:00Z.md
+```
+
+---
+
+## Step 4: Clear Processed Items
+
+### Tasks.md
+After routing all tasks, clear the Capture section:
+- Keep only the empty `- [ ]` placeholder
+
+### Inbox/
+- Route skills delete inbox files after successful routing
+- Verify files are deleted
+
+---
+
+## Step 5: Commit Changes
+
+After all items are processed, run `/commit` to checkpoint:
+- Commits vault changes with descriptive message
+- Local only, never pushes
+
+---
+
+## Step 6: Processing Report
+
+Output a summary:
+
+```
+Processing Complete
+-------------------
+Tasks processed: X
+  → Project Alpha (2 tasks)
+  → Daily journal (1 task)
+
+Inbox items processed: X
+  → meeting-notes.md → /route-meeting → Projects/Alpha/Meetings/
+  → idea.md → /route-note → Resources/Notes/20-29 Technology/
+
+Items skipped: X
+  → unclear-item.md (user chose to skip)
+
+Committed: abc1234 "Process 3 tasks, 2 inbox items"
+```
+
+---
+
+## Priority Symbols Reference
+
+| Priority | Symbol | Meaning |
+|----------|--------|---------|
+| p0 | 🔺 | Urgent, do today |
+| p1 | ⏫ | Important (default) |
+| p2 | 🔼 | Should do soon |
+| p3 | 🔽 | Nice to have |
+
+---
+
+## Johnny.Decimal Categories Reference
 
 ```
 00-09: Relationships
@@ -127,107 +179,8 @@ Use these for routing ideas/notes to `Resources/Notes/`:
 
 ---
 
-## Daily Note Template
+## Error Handling
 
-If creating a new daily note (`Resources/Journal/YYYY/MM/DD.md`), use this structure:
-
-```markdown
----
-created: YYYY-MM-DDTHH:mm
-updated: YYYY-MM-DDTHH:mm
-tags: [journal, daily]
----
-
-# YYYY-MM-DD (Day of Week)
-
-## Tasks
-(Tasks without project links get appended here)
-
-## Notes
-(Inbox items that are journal-like go here)
-
-## Meetings
-(Meeting notes without project context)
-```
-
----
-
-## Weekly Details Template
-
-If creating a new weekly details file (`Projects/[Name]/Details/YYYY-MM-DD-Www.md`):
-
-```markdown
----
-created: YYYY-MM-DDTHH:mm
-updated: YYYY-MM-DDTHH:mm
-tags: [project/project-name]
-week: Www
----
-
-# Project Name - Week WW
-
-## Tasks
-(Project tasks get appended here)
-
-## Updates
-(Project updates go here)
-
-## Blockers
-(none currently)
-```
-
----
-
-## Processing Report
-
-After running, output a summary:
-
-```
-Processing Complete
--------------------
-Tasks processed: X
-  → [destination 1]
-  → [destination 2]
-
-Inbox items processed: X
-  → [item]: [category] → [destination]
-
-Items needing clarification: X
-  → [question about item]
-
-Backlinks suggested: X
-  → [[Note1]] ↔ [[Note2]]
-```
-
----
-
-## Auto-Commit (Checkpoint)
-
-After every `/process` run, automatically commit changes to both repositories to checkpoint the information.
-
-### Steps
-
-1. **Commit second-brain changes** (if any):
-   ```bash
-   cd /path/to/second-brain
-   git add -A
-   git commit -m "process: [summary of processed items]"
-   ```
-
-2. **Commit claude-cortex changes** (if any):
-   ```bash
-   cd /path/to/claude-cortex
-   git add -A
-   git commit -m "process: checkpoint"
-   ```
-
-### Commit Message Format
-
-- For second-brain: `process: X tasks, Y inbox items processed`
-- For claude-cortex: `process: checkpoint`
-
-### Notes
-
-- Only commit if there are actual changes (check `git status` first)
-- Do not push automatically - commits are local checkpoints
-- Include the checkpoint status in the Processing Report
+- If a route skill fails, log the error and continue with remaining items
+- Failed items remain in their original location
+- Include failures in processing report

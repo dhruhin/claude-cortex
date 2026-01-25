@@ -1,7 +1,11 @@
 ---
-created: {{date}}
-updated: {{date}}
-tags: [tasks]
+created:
+  "{ date }":
+updated:
+  "{ date }":
+tags:
+  - tasks
+related: []
 ---
 
 # Tasks
