@@ -1,14 +1,14 @@
 ---
 name: route-task
 description: Parse and route a task to the appropriate location. Use for individual task processing.
-allowed-tools: Read, Write, Edit, Glob, Grep
+allowed-tools: Read, Write, Edit, Glob, Grep, Skill
 created: 2026-01-24T17:05
-updated: 2026-01-24T17:06
+updated: 2026-01-25T00:30
 ---
 
 # Route Task
 
-Routes a task to the appropriate destination (project weekly file or daily journal).
+Routes a task to the appropriate destination (project weekly file, person file, or daily journal).
 
 ## Usage
 
@@ -28,16 +28,19 @@ Routes a task to the appropriate destination (project weekly file or daily journ
    - Priority: p0/p1/p2/p3 (default: p1)
    - Due date: "01/25", "tomorrow", "next week", "by friday", etc.
    - Project keywords: Match against active projects in `Projects/`
+   - Person mentions: Names, @mentions, or references to people in `People/`
 
 2. **Convert to Obsidian Tasks format**:
    - Priority symbols: p0=🔺, p1=⏫, p2=🔼, p3=🔽
    - Due date: `📅 YYYY-MM-DD`
    - Created date: `➕ YYYY-MM-DD` (today)
    - Project link: `[[Project_Name]]`
+   - Person link: `[[Person_Name]]` (when routing to project with person context)
 
-3. **Determine destination**:
-   - If project identified → `Projects/[Name]/Details/YYYY-MM-DD-Www.md`
-   - If no project → `Resources/Journal/YYYY/MM/DD.md`
+3. **Determine destination** (in priority order):
+   - If project identified → `Projects/[Name]/Details/YYYY-MM-DD-Www.md` (add `[[Person]]` backlink if person mentioned)
+   - If person only (no project) → delegate to `/route-person-task`
+   - If neither → `Resources/Journal/YYYY/MM/DD.md`
    - If unsure about project (confidence < 70%) → Ask user
 
 4. **Route the task**:
@@ -66,6 +69,37 @@ Output:
 ```
 
 Destination: `Projects/Auth_Migration/Details/2026-01-20-W04.md`
+
+## Example with Person
+
+Input: `review PR with Sarah for auth feature by friday p0`
+
+Output:
+```markdown
+- [ ] review PR with Sarah for auth feature 🔺 📅 2026-01-24 ➕ 2026-01-24 [[Auth_Migration]] [[Sarah]]
+```
+
+Destination: `Projects/Auth_Migration/Details/2026-01-20-W04.md`
+
+Note: The `[[Sarah]]` backlink allows the task to appear in Sarah's backlinks in Obsidian.
+
+## Example Person-Only Task
+
+Input: `call Sarah about lunch tomorrow`
+
+Since no project is detected, this delegates to `/route-person-task` which routes to:
+Destination: `People/Sarah/Details/current.md`
+
+## Person Detection
+
+When parsing tasks, look for:
+- Names matching folders in `People/`
+- @mentions (e.g., @sarah)
+- Common patterns: "with [Name]", "ask [Name]", "tell [Name]", "call [Name]"
+
+If a name is detected that doesn't exist in `People/`:
+- Ask user: "Is [Name] a person you'd like to track? (y/n)"
+- If yes, invoke `/create-person` first
 
 ## Templates
 

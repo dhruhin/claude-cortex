@@ -3,7 +3,7 @@ name: process
 description: Process captured tasks and inbox items, routing them to appropriate locations in the vault. Use when user wants to organize their captures.
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Skill
 created: 2026-01-24T11:04
-updated: 2026-01-24T23:54
+updated: 2026-01-25T00:30
 ---
 
 # Process
@@ -66,6 +66,7 @@ For each item, determine its type:
 | Type | Indicators | Route Skill |
 |------|------------|-------------|
 | Task | Action verbs, "p0-p3", due dates (non-italicized) | `/route-task` |
+| Person Task | Task mentioning a person but no project context | `/route-person-task` |
 | Project Note | Italicized text (`*text*` or `_text_`) in Tasks.md | `/route-project-update` |
 | Project Update | References active project, status update | `/route-project-update` |
 | Meeting Notes | "meeting", "call", "sync", attendee mentions | `/route-meeting` |
@@ -90,13 +91,14 @@ Unable to confidently classify this item:
 "[content preview]"
 
 What type is this?
-1. Task
-2. Project Update
-3. Meeting Notes
-4. Idea/Note
-5. Journal Entry
-6. Context Update
-7. Skip (leave in inbox)
+1. Task (with project context)
+2. Person Task (person-only, no project)
+3. Project Update
+4. Meeting Notes
+5. Idea/Note
+6. Journal Entry
+7. Context Update
+8. Skip (leave in inbox)
 ```
 
 ---
@@ -107,6 +109,7 @@ For each classified item, invoke the appropriate route skill:
 
 ```
 Task → /route-task "[content]"
+Person Task → /route-person-task "[person]" "[content]"
 Project Note (italic) → /route-project-update "[content]" (as note, not task)
 Project Update → /route-project-update "[content]"
 Meeting Notes → /route-meeting "[content]"
@@ -114,6 +117,9 @@ Idea/Note → /route-note "[content]"
 Journal Entry → /route-journal "[content]"
 Context Update → /route-context "[content]"
 ```
+
+Note: Tasks with both a project and person context use `/route-task` which adds person backlinks.
+Person-only tasks (no project) use `/route-person-task` directly.
 
 If item came from an inbox file, pass the file path:
 ```
