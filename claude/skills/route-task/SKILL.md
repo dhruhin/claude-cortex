@@ -3,7 +3,7 @@ name: route-task
 description: Parse and route a task to the appropriate location. Use for individual task processing.
 allowed-tools: Read, Write, Edit, Glob, Grep, Skill, Bash
 created: 2026-01-24T17:05
-updated: 2026-01-25T02:33
+updated: 2026-01-25T14:31
 ---
 
 # Route Task
@@ -19,16 +19,21 @@ Routes tasks to project weekly file, person file, or daily journal.
 
 ## Steps
 
-1. **Parse input**: Priority (p0-p3), due date, project keywords, person mentions
+1. **Parse input**: Priority (p0-p3), due date (optional), project keywords, person mentions
 2. **Preserve wording**: Keep EXACT task text, only ADD metadata (symbols, dates, links)
-3. **Convert to Obsidian Tasks**: Priority symbol + `📅` + `➕` + `[[Project]]` + `[[Person]]`
-4. **Determine destination**:
+3. **Add inline links**: Prefer `[[Person]]` or `[[Project]]` inline where natural (e.g., "with [[Sarah]]", "[[Joseph]]'s team")
+4. **Avoid redundant links**:
+   - When routing to Project file -> DON'T add `[[ProjectName]]` (redundant)
+   - When routing to Person file -> DON'T add `[[PersonName]]` (redundant)
+   - DO keep cross-reference links (other people/projects mentioned)
+5. **Add metadata**: Priority symbol + `📅 YYYY-MM-DD` (only if due date) + `➕ YYYY-MM-DD`
+6. **Determine destination**:
    - Project -> `Projects/[Name]/Details/YYYY-MM-DD-Www.md`
    - Person only -> delegate to /route-person-task
    - Neither -> `Resources/Journal/YYYY/MM/DD.md`
    - Unsure (<70%) -> Ask user
-5. **Append to ## Tasks section**
-6. **Leave source intact**: Do NOT delete inbox files
+7. **Append to ## Tasks section**
+8. **Leave source intact**: Do NOT delete inbox files
 
 ## Priority Symbols
 
@@ -43,15 +48,23 @@ Routes tasks to project weekly file, person file, or daily journal.
 
 **With project:**
 `review PR for auth feature by friday p0`
--> `- [ ] review PR for auth feature 🔺 📅 2026-01-24 ➕ 2026-01-24 [[Auth_Migration]]`
+-> `- [ ] review PR for auth feature 🔺 📅 2026-01-24 ➕ 2026-01-24`
 -> `Projects/Auth_Migration/Details/2026-01-20-W04.md`
+(Note: No `[[Auth_Migration]]` link - it's redundant in the project's own file)
 
 **With project + person:**
 `review PR with Sarah for auth feature p0`
--> `- [ ] review PR with Sarah for auth feature 🔺 📅 2026-01-24 ➕ 2026-01-24 [[Auth_Migration]] [[Sarah]]`
+-> `- [ ] review PR with [[Sarah]] for auth feature 🔺 📅 2026-01-24 ➕ 2026-01-24`
+-> `Projects/Auth_Migration/Details/2026-01-20-W04.md`
+(Note: Keep `[[Sarah]]` as cross-reference, but no `[[Auth_Migration]]`)
 
 **Person only:** `call Sarah about lunch tomorrow`
 -> Delegates to /route-person-task -> `People/Sarah/Details/current.md`
+
+**Inline link examples:**
+- "with [[Ratie]]" (person inline)
+- "[[Sube]]/[[Amalia]]" (multiple people inline)
+- "[[Joseph]]'s team" (possessive inline)
 
 ## Person Detection
 
