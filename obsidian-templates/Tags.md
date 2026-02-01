@@ -1,8 +1,6 @@
 ---
-created:
-  "{ date }":
-updated:
-  "{ date }":
+created: 2026-01-31T22:37
+updated: 2026-01-31T22:37
 tags:
   - meta
 related: []

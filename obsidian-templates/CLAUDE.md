@@ -1,6 +1,6 @@
 ---
 created: 2026-01-24T17:04
-updated: 2026-01-24T17:07
+updated: 2026-01-31T22:37
 ---
 # Claude Instructions
 
@@ -10,20 +10,20 @@ Personal knowledge management using Obsidian + Claude Code.
 
 ## Directory Map
 
-- `Inbox/` - Raw non-task captures, process with /process
+- `0. Inbox/` - Raw non-task captures, process with /process
 - `Tasks.md` - Quick task entry, process with /process
-- `Context/` - Reference files about me (load when relevant)
-- `Projects/` - Active projects with end dates
-- `Areas/` - Ongoing life areas (no end date)
-- `Resources/Journal/` - Daily notes
-- `Resources/Notes/` - Knowledge base (Johnny.Decimal)
+- `4. Context/` - Reference files about me (load when relevant)
+- `1. Projects/` - Active projects with end dates
+- `2. Areas/` - Ongoing life areas (no end date)
+- `3. Resources/Journal/` - Daily notes
+- `3. Resources/Notes/` - Knowledge base (Johnny.Decimal)
 
 ## Context Loading Rules
 
 When I mention:
-- Health/fitness → load `Context/Health/physical.md`
-- Career/work → load `Context/Career/` files
-- Writing/content → load `Context/Writing/` files
+- Health/fitness → load `4. Context/Health/physical.md`
+- Career/work → load `4. Context/Career/` files
+- Writing/content → load `4. Context/Writing/` files
 - A specific project → load that project's `CLAUDE.md`
 
 ## File Naming Conventions
@@ -31,7 +31,7 @@ When I mention:
 - Inbox: ISO 8601 timestamp (`2026-01-24T10:30:00Z.md`)
 - Weekly details: `YYYY-MM-DD-Www.md` (`2026-01-20-W04.md`)
 - Monthly details: `YYYY-MM.md`
-- Daily journal: `Resources/Journal/YYYY/MM/DD.md`
+- Daily journal: `3. Resources/Journal/YYYY/MM/DD.md`
 
 ## Frontmatter (All Processed Files)
 
@@ -47,11 +47,11 @@ related: []
 ## Task Processing Rules
 
 Raw input: `message sarah about project deadline by 01/25 p0`
-Processed output: `- [ ] message sarah about project deadline ⏫⏫ 📅 2026-01-25 ➕ 2026-01-24 [[Project_Name]]`
+Processed output: `- [ ] message sarah about project deadline ⏫ 📅 2026-01-25 ➕ 2026-01-24 [[Project_Name]]`
 
 Route to:
 - If project identified → Project's current week Details file
-- If no project → Today's daily note (`Resources/Journal/YYYY/MM/DD.md`)
+- If no project → Today's daily note (`3. Resources/Journal/YYYY/MM/DD.md`)
 
 ## Tags
 

@@ -3,7 +3,7 @@ name: route-task
 description: Parse and route a task to the appropriate location. Use for individual task processing.
 allowed-tools: Read, Write, Edit, Glob, Grep, Skill, Bash, AskUserQuestion
 created: 2026-01-24T17:05
-updated: 2026-01-31T17:00
+updated: 2026-01-31T22:38
 ---
 
 # Route Task
@@ -136,6 +136,8 @@ updated: YYYY-MM-DDTHH:mm
 tags: [journal, daily]
 related: []
 ---
+
+## Tasks
 
 ## Notes
 

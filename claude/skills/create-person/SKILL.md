@@ -3,7 +3,7 @@ name: create-person
 description: Create a new person folder for tracking tasks and relationships. Use when adding someone to track.
 allowed-tools: Read, Write, Edit, Glob, AskUserQuestion
 created: 2026-01-25T00:27
-updated: 2026-01-25T02:32
+updated: 2026-01-31T22:37
 ---
 
 # Create Person
@@ -58,6 +58,8 @@ created: YYYY-MM-DDTHH:mm
 updated: YYYY-MM-DDTHH:mm
 tags: [people/firstname]
 ---
+
+## Tasks
 
 ## Notes
 ```
