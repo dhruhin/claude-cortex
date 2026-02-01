@@ -3,7 +3,7 @@ name: process
 description: Process captured tasks and inbox items, routing them to appropriate locations in the vault. Use when user wants to organize their captures.
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Skill, Task
 created: 2026-01-24T11:04
-updated: 2026-01-25T00:55
+updated: 2026-01-31T16:51
 ---
 
 # Process
@@ -23,7 +23,7 @@ Orchestrator that classifies captured content and delegates to route skills.
 4. **Leave original items intact** (user clears manually)
 5. Run /commit
 6. Output report
-7. Sync semantic index (background)
+7. Run `qmd embed` (background) to update semantic index
 
 **IMPORTANT**: Never delete source content. User clears manually after review.
 
