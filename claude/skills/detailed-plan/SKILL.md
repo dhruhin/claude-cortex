@@ -3,12 +3,12 @@ name: detailed-plan
 description: Create detailed implementation plans for complex or assumption-heavy tasks. Use when the user requests a plan or when you need to make assumptions.
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, AskUserQuestion
 created: 2026-01-31T16:59
-updated: 2026-01-31T16:59
+updated: 2026-01-31T20:04
 ---
 
 # Detailed Plan
 
-Create implementation plans for user review before executing complex work.
+Create implementation plans for user review before executing complex work. Plans are iterative - expect multiple drafts before execution.
 
 ## When to Use
 
@@ -50,26 +50,65 @@ status: draft
 - [ ] Assumption 1 - My preferred answer: X
 - [ ] Assumption 2 - My preferred answer: Y
 
-## Approach
-[High-level strategy]
+## Options
+
+### Option A: [Name]
+- [ ] Select this option
+- Pros: ...
+- Cons: ...
+
+### Option B: [Name]
+- [ ] Select this option
+- Pros: ...
+- Cons: ...
 
 ## Changes
+[After options are selected, detail specific changes]
 
 ### File 1: path/to/file.md
 - Change A
 - Change B
-
-### File 2: path/to/other.md
-- Change C
 
 ## Questions
 - [ ] Question requiring user input?
 
 ## Risks
 - [Any concerns or trade-offs]
+
+---
+
+## Iteration Log
+Space for back-and-forth refinement before execution.
+
+### Draft 1
+[Initial plan above]
+
+### Draft 2
+[Revisions based on feedback]
 ```
 
 ## Key Behaviors
+
+### Use Checkboxes for Decisions
+Present options with checkboxes so user can select:
+```markdown
+### Option A: JWT tokens
+- [ ] Select this option
+- Stateless, scalable
+- Harder to revoke
+
+### Option B: Session cookies
+- [ ] Select this option
+- Easy to revoke
+- Requires session store
+```
+
+### Iterate Before Executing
+Plans go through drafts. After each round of feedback:
+1. Update the plan in place
+2. Add notes to the Iteration Log
+3. Wait for approval before executing
+4. User says "execute" or "do it" when ready
 
 ### State Assumptions as Questions
 Don't just assume. State what you'd assume and ask:
