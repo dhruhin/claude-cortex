@@ -3,7 +3,7 @@ name: process
 description: Process captured tasks and inbox items, routing them to appropriate locations in the vault. Use when user wants to organize their captures.
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Skill, Task, AskUserQuestion
 created: 2026-01-24T11:04
-updated: 2026-01-31T22:42
+updated: 2026-02-01T01:48
 ---
 
 # Process
@@ -100,7 +100,7 @@ Task 2: "Route meeting via /route-meeting: [EXACT content]. DO NOT delete source
 | p2 | 🔼 |
 | p3 | 🔽 |
 
-**Johnny.Decimal categories**: Check vault's `CLAUDE.md` or scan `3. Resources/Notes/` directory structure.
+**Johnny.Decimal categories**: Run `ls "3. Resources/Notes/"` to see available categories when routing notes.
 
 ## Report Format
 

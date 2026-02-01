@@ -3,7 +3,7 @@ name: route-project-update
 description: Route a project update to the project's weekly details file. Use for status updates, progress notes, and project-related content.
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 created: 2026-01-24T17:05
-updated: 2026-01-31T22:40
+updated: 2026-02-01T01:52
 ---
 
 # Route Project Update
@@ -52,3 +52,13 @@ related: []
 
 ## Blockers
 ```
+
+## Edge Cases
+
+**Project Matching**: Use fuzzy matching against folder names in `1. Projects/`. Keywords like "auth", "migration", "API" should match `Auth_Migration` or `API_Redesign`. If ambiguous, present options and allow cancel.
+
+**Weekly File Creation**: Date is always Monday of current week. Calculate with: `date -v monday` (macOS) or equivalent. File may not exist yet—create from template if missing.
+
+**Multiple Projects**: If update mentions multiple projects, ask which one to route to. Don't duplicate content across projects unless explicitly requested.
+
+**Week Boundaries**: Friday updates go in current week. Monday updates start new week. Use actual date to determine correct weekly file, not relative terms like "this week".

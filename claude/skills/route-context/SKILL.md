@@ -3,7 +3,7 @@ name: route-context
 description: Update personal context files with new information. Use for updates about yourself, preferences, work details.
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 created: 2026-01-24T17:05
-updated: 2026-01-31T22:40
+updated: 2026-02-01T01:52
 ---
 
 # Route Context
@@ -62,3 +62,13 @@ related: []
 - New job -> `4. Context/Career/current-role.md` (update role, company)
 - Health goal -> `4. Context/Health/physical.md` (append to goals)
 - Writing preference -> `4. Context/Writing/style.md` (add to preferences)
+
+## Edge Cases
+
+**Category Matching**: Use keyword matching against existing `4. Context/` subdirectories. "Job", "work", "career" → `Career/`. "Fitness", "nutrition", "exercise" → `Health/`. When unclear, check existing files before creating new categories.
+
+**Replace vs. Append**: Facts that change (job title, current weight) should replace old values. Goals, preferences, and historical notes should append with timestamps.
+
+**Creating New Files**: Only create new context files for genuinely new topics. Check similar files first—"current-role.md" vs "job.md" are duplicates.
+
+**Sensitive Information**: Context files may contain private details (salary, health conditions). User controls vault privacy; route without filtering.

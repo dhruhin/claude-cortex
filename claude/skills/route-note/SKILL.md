@@ -3,7 +3,7 @@ name: route-note
 description: Route an idea or note to the knowledge base. Use for thoughts, research, and reference material.
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 created: 2026-01-24T17:05
-updated: 2026-01-31T22:42
+updated: 2026-02-01T01:52
 ---
 
 # Route Note
@@ -86,3 +86,19 @@ Standalone explanation.
 ## Related Ideas
 - [[Related Note]]
 ```
+
+## Note Type Classification
+
+**Fleeting**: Quick captures, unprocessed thoughts. "Microservices seem useful" → needs development.
+
+**Literature**: From external sources with attribution. Book notes, article summaries, research papers.
+
+**Permanent**: Fully developed, standalone ideas in your own words. "Microservices work best with clear domain boundaries because..." with explanations.
+
+## Johnny.Decimal Guidance
+
+**Finding Categories**: Scan `3. Resources/Notes/` for existing `NN-NN Category/` folders. Match content to category (e.g., "10-19 Software Engineering", "20-29 Business").
+
+**Creating Categories**: Avoid creating new categories unless existing ones clearly don't fit. Ask user to confirm new category structure.
+
+**No Match**: When genuinely cross-category, choose primary focus or ask user. Don't create "Miscellaneous".

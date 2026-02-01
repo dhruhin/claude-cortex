@@ -3,7 +3,7 @@ name: route-journal
 description: Route personal reflections and daily entries to the journal. Use for daily logs, reflections, and personal notes.
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 created: 2026-01-24T17:05
-updated: 2026-01-31T22:40
+updated: 2026-02-01T01:52
 ---
 
 # Route Journal
@@ -53,3 +53,13 @@ Without time:
 ```markdown
 - Content of entry
 ```
+
+## Edge Cases
+
+**Journal vs. Daily Note**: Use journal for reflections, thoughts, and personal observations. Daily notes automatically capture tasks and meetings. If unsure, default to journal.
+
+**Time Format**: Extract time from inbox filename timestamp (e.g., `2026-01-24T14:30:00Z.md` → `14:30`). If routing direct text without a file, use current time from `date` command.
+
+**Date Ambiguity**: Inbox files encode their creation date in filename. Content referencing "yesterday" or "last week" should still be routed to the file's creation date unless explicitly specified otherwise.
+
+**Creating Year/Month Directories**: Journal structure requires `YYYY/MM/` directories. Always create missing parent directories before writing the daily file.
