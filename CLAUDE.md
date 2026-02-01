@@ -1,6 +1,6 @@
 ---
 created: 2026-01-24T12:31
-updated: 2026-01-31T22:42
+updated: 2026-01-31T23:26
 ---
 # Second Brain - Claude Instructions
 
@@ -113,8 +113,9 @@ tags: []
 
 ### How to Plan
 1. Save plans to `plans/` (gitignored, visible in Obsidian)
-2. Open in Obsidian: `open -a "Obsidian" "/path/to/plan.md"`
-3. Wait for user review before implementing
+2. Include "## Response:" section after executive summary with placeholder: "[Your feedback here - approve priorities, adjust approach, ask questions, etc.]"
+3. Open in Obsidian: `open -a "Obsidian" "/path/to/plan.md"`
+4. Wait for user review before implementing
 
 ### Assumptions
 - State assumptions as questions with your preferred answer
