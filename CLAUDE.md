@@ -1,6 +1,6 @@
 ---
 created: 2026-01-24T12:31
-updated: 2026-01-31T16:31
+updated: 2026-01-31T16:59
 ---
 # Second Brain - Claude Instructions
 
@@ -101,10 +101,25 @@ tags: []
 
 ## Planning
 
-- Save plans to `plans/` (gitignored, visible in Obsidian)
-- Open in Obsidian: `open -a "Obsidian" "/path/to/plan.md"`
-- **Assumptions**: Ask clarifying questions, suggest your preferred answer
-- Proceed with suggested approach unless corrected
+**IMPORTANT**: Use `/detailed-plan` for any non-trivial work. Err on the side of planning.
+
+### When to Plan
+- Multiple valid approaches exist
+- You need to make assumptions
+- Changes affect multiple files
+- The user's intent isn't 100% clear
+- You're uncertain about anything
+
+### How to Plan
+1. Save plans to `plans/` (gitignored, visible in Obsidian)
+2. Open in Obsidian: `open -a "Obsidian" "/path/to/plan.md"`
+3. Wait for user review before implementing
+
+### Assumptions
+- State assumptions as questions with your preferred answer
+- Example: "I'm assuming X. Is that correct, or would you prefer Y?"
+- Ask lots of questions - this is encouraged
+- Proceed with stated approach only after user confirms (or says "just do it")
 
 ## Internet Research
 

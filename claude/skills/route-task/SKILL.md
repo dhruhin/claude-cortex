@@ -1,9 +1,9 @@
 ---
 name: route-task
 description: Parse and route a task to the appropriate location. Use for individual task processing.
-allowed-tools: Read, Write, Edit, Glob, Grep, Skill, Bash
+allowed-tools: Read, Write, Edit, Glob, Grep, Skill, Bash, AskUserQuestion
 created: 2026-01-24T17:05
-updated: 2026-01-31T15:30
+updated: 2026-01-31T17:00
 ---
 
 # Route Task
@@ -20,7 +20,7 @@ Routes tasks to project weekly file, person file, or daily journal.
 ## Steps
 
 1. **Scan active projects**: List `Projects/` (exclude `Archive/`), read each `CLAUDE.md`
-2. **Match to project**: Check task text against project names and aliases (see Project Matching)
+2. **Match to project**: Check task text against project names AND aliases (see Project Matching)
 3. **Parse input**: Priority (p0-p3), due date (optional), person mentions
 4. **Preserve wording**: Keep EXACT task text, only ADD metadata (symbols, dates, links)
 5. **Add inline links**: Prefer `[[Person]]` or `[[Project]]` inline where natural (e.g., "with [[Sarah]]", "[[Joseph]]'s team")
@@ -33,7 +33,7 @@ Routes tasks to project weekly file, person file, or daily journal.
    - Project match -> `Projects/[Name]/Details/YYYY-MM-DD-Www.md`
    - Person only -> delegate to /route-person-task
    - Neither -> `Resources/Journal/YYYY/MM/DD.md`
-   - Unsure (<70%) -> **Ask user** which project (or none)
+   - **No match -> Ask user** (see Unmatched Destinations)
 9. **Append to ## Tasks section**
 10. **Leave source intact**: Do NOT delete inbox files
 
@@ -43,10 +43,49 @@ Routes tasks to project weekly file, person file, or daily journal.
 
 1. **List active projects**: `ls "1. Projects/"` excluding `Archive/`
 2. **Read project context**: For each project, read `CLAUDE.md` for project name and overview
-3. **Match task text** (case-insensitive) against project names
-4. **When in doubt, ask**: If uncertain about project match, ask user:
+3. **Check aliases**: Look for `aliases:` field in project frontmatter
+4. **Match task text** (case-insensitive) against project names AND aliases
+5. **When in doubt, ask**: If uncertain about project match, ask user:
    - "Should this task go to [Project]? Or somewhere else?"
    - Offer: matched project, other active projects, daily journal
+
+## Aliases
+
+Projects, Areas, and People can define aliases in frontmatter for matching:
+```yaml
+---
+aliases:
+  - short-name
+  - acronym
+  - alternate-name
+---
+```
+
+Example: A project named "Authentication Migration" might have:
+```yaml
+aliases:
+  - auth
+  - auth-migration
+  - authn
+```
+
+Then a task mentioning "auth" would match this project.
+
+## Unmatched Destinations
+
+When a task doesn't match any existing project, area, or person:
+
+1. **Ask user** with options:
+   - Create new project?
+   - Create new area?
+   - Create new person?
+   - Add alias to existing destination?
+   - Route to daily journal?
+
+2. If user chooses to create, use appropriate skill:
+   - /create-project
+   - /create-area
+   - /create-person
 
 ## Priority Symbols
 
