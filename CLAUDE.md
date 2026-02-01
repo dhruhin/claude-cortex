@@ -1,6 +1,6 @@
 ---
 created: 2026-01-24T12:31
-updated: 2026-01-31T17:06
+updated: 2026-01-31T18:46
 ---
 # Second Brain - Claude Instructions
 
@@ -87,6 +87,7 @@ Load `4. Context/` files when the topic is relevant:
 - Monthly: `YYYY-MM.md`
 - Daily journal: `3. Resources/Journal/YYYY/MM/DD.md`
 - Inbox: ISO 8601 timestamp (`YYYY-MM-DDTHH:mm:ssZ.md`)
+- Plans: `YYYY-MM-DD-slug.md` (date prefix for sorting)
 
 ## Frontmatter
 
