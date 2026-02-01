@@ -1,6 +1,6 @@
 ---
 created: 2026-01-24T17:08
-updated: 2026-01-24T22:46
+updated: 2026-01-31T17:06
 ---
 # Claude Cortex
 
@@ -48,9 +48,9 @@ Claude Cortex provides:
 
 3. Copy and customize the templates:
    ```bash
-   cp claude-cortex/templates/CLAUDE.md CLAUDE.md
-   cp claude-cortex/templates/Tags.md Tags.md
-   cp claude-cortex/templates/Tasks.md Tasks.md
+   cp claude-cortex/obsidian-templates/CLAUDE.md CLAUDE.md
+   cp claude-cortex/obsidian-templates/Tags.md Tags.md
+   cp claude-cortex/obsidian-templates/Tasks.md Tasks.md
    ```
 
 4. Create the directory structure:
@@ -188,7 +188,7 @@ This ensures changes are checkpointed with intelligent commit messages when Clau
 
 ## Templates
 
-Templates are in `templates/` and should be copied to your vault root:
+Templates are in `obsidian-templates/` and should be copied to your vault root:
 
 | Template | Purpose |
 |----------|---------|

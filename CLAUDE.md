@@ -1,6 +1,6 @@
 ---
 created: 2026-01-24T12:31
-updated: 2026-01-31T16:59
+updated: 2026-01-31T17:06
 ---
 # Second Brain - Claude Instructions
 
@@ -43,7 +43,7 @@ qmd multi-get "journal/2025-01*.md" # Glob pattern
 
 - `claude-cortex/` - Claude Code configuration repo (symlinked at `.claude/`)
   - Skills: `claude-cortex/claude/skills/` (symlinked to `.claude/skills/`)
-  - Templates: `claude-cortex/templates/` (source of truth)
+  - Obsidian Templates: `claude-cortex/obsidian-templates/` (source of truth)
   - When I say "update both repos", this means second-brain AND claude-cortex
 
 ## Commit Conventions
@@ -70,7 +70,7 @@ executions/        - Task execution tracking
    pending/        - Work in progress, blocked on questions
    completed/      - Finished execution logs
 plans/             - Claude planning documents (gitignored)
-templates/         - Obsidian Templater (copied from claude-cortex, gitignored)
+templates/         - Obsidian Templater (copied from claude-cortex/obsidian-templates, gitignored)
 ```
 
 ## Context Loading
