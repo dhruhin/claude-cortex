@@ -3,7 +3,7 @@ name: route-note
 description: Route an idea or note to the knowledge base. Use for thoughts, research, and reference material.
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 created: 2026-01-24T17:05
-updated: 2026-01-31T22:40
+updated: 2026-01-31T22:42
 ---
 
 # Route Note
@@ -26,15 +26,7 @@ Routes ideas and notes to the knowledge base organized by Johnny.Decimal.
 5. **Suggest backlinks** from related notes
 6. **Clean up**: Delete inbox file if applicable
 
-## Johnny.Decimal Categories
-
-```
-00-09 Relationships    50-59 Life Logistics
-10-19 Career           60-69 Business
-20-29 Technology       70-79 Learning
-30-39 Money            80-89 History
-40-49 Health           90-99 Media
-```
+**Johnny.Decimal categories**: Check vault's `CLAUDE.md` or scan `3. Resources/Notes/` directory structure.
 
 ## Templates
 
