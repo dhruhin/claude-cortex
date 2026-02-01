@@ -42,24 +42,11 @@ Routes tasks to project weekly file, person file, or daily journal.
 **Priority**: Always try to match tasks to active projects first.
 
 1. **List active projects**: `ls "1. Projects/"` excluding `Archive/`
-2. **Read project context**: For each project, read `CLAUDE.md` to get:
-   - `aliases` frontmatter field (explicit shortcuts)
-   - Project name (folder name, with underscores as spaces)
-   - Keywords from Overview section
-3. **Match task text** (case-insensitive):
-   - Exact alias match (highest confidence)
-   - Partial project name match (e.g., "friendly" -> Friendly_Formats)
-   - Keyword match from Overview (lower confidence)
-4. **When in doubt, ask**: If match confidence < 70%, ask user:
+2. **Read project context**: For each project, read `CLAUDE.md` for project name and overview
+3. **Match task text** (case-insensitive) against project names
+4. **When in doubt, ask**: If uncertain about project match, ask user:
    - "Should this task go to [Project]? Or somewhere else?"
    - Offer: matched project, other active projects, daily journal
-
-**Example aliases in project CLAUDE.md**:
-```yaml
----
-aliases: [ff, friendly, formats, imagine me]
----
-```
 
 ## Priority Symbols
 
