@@ -3,7 +3,7 @@ name: context-review
 description: Review Areas vs Context, identify gaps, fill missing information
 allowed-tools: Read, Write, Edit, Glob, Grep, AskUserQuestion
 created: 2026-01-24T22:00
-updated: 2026-01-24T22:30
+updated: 2026-01-31T22:39
 ---
 
 # Context Review
@@ -18,8 +18,8 @@ Analyzes Areas/ vs Context/, identifies gaps or stale info, and helps fill missi
 
 ## Steps
 
-1. **Scan Areas/**: Glob `Areas/*/index.md`
-2. **Scan Context/**: Glob `Context/*/*.md`, check `updated` timestamps
+1. **Scan Areas/**: Glob `2. Areas/*/index.md`
+2. **Scan Context/**: Glob `4. Context/*/*.md`, check `updated` timestamps
 3. **Build status report** with indicators:
    - ✓ Current (updated < 30 days)
    - ⚠ Stale (updated > 30 days)
@@ -34,13 +34,13 @@ Analyzes Areas/ vs Context/, identifies gaps or stale info, and helps fill missi
 Context Status Report
 ═════════════════════
 
-Areas/Health/
-  └─ Context/Health/
+2. Areas/Health/
+  └─ 4. Context/Health/
      ├─ physical-fitness.md ✓ (5 days ago)
      └─ mental.md ✗ missing
 
-Areas/Career/
-  └─ Context/Career/ ✗ No context files
+2. Areas/Career/
+  └─ 4. Context/Career/ ✗ No context files
 
 Summary: 2 areas need attention
 ```

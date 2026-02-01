@@ -3,7 +3,7 @@ name: execute-task
 description: Autonomously execute tasks from the vault. Use when user wants to make progress on tasks, work on todos, or execute pending items.
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Task, AskUserQuestion, WebFetch, WebSearch
 created: 2026-01-25T01:35
-updated: 2026-01-25T01:37
+updated: 2026-01-31T22:39
 ---
 
 # Execute Task
@@ -22,10 +22,10 @@ Picks tasks from vault, makes autonomous progress, stores results with status tr
 1. Check `executions/pending/` for resumable work
 2. If pending exists: offer resume or pick new
 3. Scan incomplete tasks from:
-   - `Projects/*/Details/*.md`
-   - `People/*/Details/current.md`
-   - `Resources/Journal/YYYY/MM/DD.md`
-   - `Areas/*/Details/*.md`
+   - `1. Projects/*/Details/*.md`
+   - `5. People/*/Details/current.md`
+   - `3. Resources/Journal/YYYY/MM/DD.md`
+   - `2. Areas/*/Details/*.md`
 4. Present multi-select menu (sorted by priority, due date)
 5. Spawn parallel subagents for selected tasks
 6. Each subagent writes execution file and links to original task

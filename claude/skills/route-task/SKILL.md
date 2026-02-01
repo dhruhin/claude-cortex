@@ -3,7 +3,7 @@ name: route-task
 description: Parse and route a task to the appropriate location. Use for individual task processing.
 allowed-tools: Read, Write, Edit, Glob, Grep, Skill, Bash, AskUserQuestion
 created: 2026-01-24T17:05
-updated: 2026-01-31T22:38
+updated: 2026-01-31T22:41
 ---
 
 # Route Task
@@ -19,7 +19,7 @@ Routes tasks to project weekly file, person file, or daily journal.
 
 ## Steps
 
-1. **Scan active projects**: List `Projects/` (exclude `Archive/`), read each `CLAUDE.md`
+1. **Scan active projects**: List `1. Projects/` (exclude `Archive/`), read each `CLAUDE.md`
 2. **Match to project**: Check task text against project names AND aliases (see Project Matching)
 3. **Parse input**: Priority (p0-p3), due date (optional), person mentions
 4. **Preserve wording**: Keep EXACT task text, only ADD metadata (symbols, dates, links)
@@ -30,9 +30,9 @@ Routes tasks to project weekly file, person file, or daily journal.
    - DO keep cross-reference links (other people/projects mentioned)
 7. **Add metadata**: Priority symbol + `📅 YYYY-MM-DD` (only if due date) + `➕ YYYY-MM-DD`
 8. **Determine destination**:
-   - Project match -> `Projects/[Name]/Details/YYYY-MM-DD-Www.md`
+   - Project match -> `1. Projects/[Name]/Details/YYYY-MM-DD-Www.md`
    - Person only -> delegate to /route-person-task
-   - Neither -> `Resources/Journal/YYYY/MM/DD.md`
+   - Neither -> `3. Resources/Journal/YYYY/MM/DD.md`
    - **No match -> Ask user** (see Unmatched Destinations)
 9. **Append to ## Tasks section**
 10. **Leave source intact**: Do NOT delete inbox files
@@ -101,17 +101,17 @@ When a task doesn't match any existing project, area, or person:
 **With project:**
 `review PR for auth feature by friday p0`
 -> `- [ ] review PR for auth feature 🔺 📅 2026-01-24 ➕ 2026-01-24`
--> `Projects/Auth_Migration/Details/2026-01-20-W04.md`
+-> `1. Projects/Auth_Migration/Details/2026-01-20-W04.md`
 (Note: No `[[Auth_Migration]]` link - it's redundant in the project's own file)
 
 **With project + person:**
 `review PR with Sarah for auth feature p0`
 -> `- [ ] review PR with [[Sarah]] for auth feature 🔺 📅 2026-01-24 ➕ 2026-01-24`
--> `Projects/Auth_Migration/Details/2026-01-20-W04.md`
+-> `1. Projects/Auth_Migration/Details/2026-01-20-W04.md`
 (Note: Keep `[[Sarah]]` as cross-reference, but no `[[Auth_Migration]]`)
 
 **Person only:** `call Sarah about lunch tomorrow`
--> Delegates to /route-person-task -> `People/Sarah/Details/current.md`
+-> Delegates to /route-person-task -> `5. People/Sarah/Details/current.md`
 
 **Inline link examples:**
 - "with [[Ratie]]" (person inline)
@@ -120,7 +120,7 @@ When a task doesn't match any existing project, area, or person:
 
 ## Person Detection
 
-- Names matching `People/` folders
+- Names matching `5. People/` folders
 - @mentions
 - Patterns: "with [Name]", "ask [Name]", "call [Name]"
 

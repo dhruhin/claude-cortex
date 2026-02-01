@@ -3,7 +3,7 @@ name: route-note
 description: Route an idea or note to the knowledge base. Use for thoughts, research, and reference material.
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 created: 2026-01-24T17:05
-updated: 2026-01-25T00:55
+updated: 2026-01-31T22:40
 ---
 
 # Route Note
@@ -22,7 +22,7 @@ Routes ideas and notes to the knowledge base organized by Johnny.Decimal.
 1. **Classify by Johnny.Decimal** (ask if unsure)
 2. **Determine type**: fleeting, literature, or permanent
 3. **Generate title** from content (sentence case)
-4. **Route to**: `Resources/Notes/NN-NN Category/Title.md`
+4. **Route to**: `3. Resources/Notes/NN-NN Category/Title.md`
 5. **Suggest backlinks** from related notes
 6. **Clean up**: Delete inbox file if applicable
 

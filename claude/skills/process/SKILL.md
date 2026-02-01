@@ -3,7 +3,7 @@ name: process
 description: Process captured tasks and inbox items, routing them to appropriate locations in the vault. Use when user wants to organize their captures.
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash, Skill, Task, AskUserQuestion
 created: 2026-01-24T11:04
-updated: 2026-01-31T17:00
+updated: 2026-01-31T22:41
 ---
 
 # Process
@@ -13,11 +13,11 @@ Orchestrator that classifies captured content and delegates to route skills.
 ## Scope
 
 1. `Tasks.md` Capture section
-2. All files in `Inbox/` (skip files starting with `[PROCESSED]`)
+2. All files in `0. Inbox/` (skip files starting with `[PROCESSED]`)
 
 ## Workflow
 
-1. Read Tasks.md Capture section and Inbox/ files (skip `[PROCESSED]` files)
+1. Read Tasks.md Capture section and 0. Inbox/ files (skip `[PROCESSED]` files)
 2. Classify each item (confidence < 70% -> ask user)
 3. **Check for unmatched destinations** (see below)
 4. Spawn parallel subagents for all classified items

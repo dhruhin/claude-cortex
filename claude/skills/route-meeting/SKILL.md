@@ -3,7 +3,7 @@ name: route-meeting
 description: Route meeting notes to the appropriate location. Use for call notes, sync summaries, and meeting content.
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 created: 2026-01-24T17:05
-updated: 2026-01-25T00:55
+updated: 2026-01-31T22:40
 ---
 
 # Route Meeting
@@ -21,8 +21,8 @@ Routes meeting notes to project folder or daily journal.
 
 1. **Identify project**: Look for project references in content
 2. **Destination**:
-   - With project: `Projects/[Name]/Meetings/YYYY-MM-DD-Title.md`
-   - No project: `Resources/Journal/YYYY/MM/DD.md` under ## Meetings
+   - With project: `1. Projects/[Name]/Meetings/YYYY-MM-DD-Title.md`
+   - No project: `3. Resources/Journal/YYYY/MM/DD.md` under ## Meetings
 3. **Extract**: Title, date, attendees, action items
 4. **Format and route**
 5. **Clean up**: Delete inbox file if applicable

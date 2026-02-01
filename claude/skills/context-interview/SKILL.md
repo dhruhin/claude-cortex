@@ -3,7 +3,7 @@ name: context-interview
 description: Build personal context through structured questioning about life areas
 allowed-tools: Read, Write, Edit, Glob, Grep, AskUserQuestion
 created: 2026-01-24T22:00
-updated: 2026-01-24T22:29
+updated: 2026-01-31T22:39
 ---
 
 # Context Interview
@@ -19,12 +19,12 @@ Builds personal context through structured questioning, synthesizing answers int
 
 ## Steps
 
-1. **Select area**: Glob `Areas/*/index.md` and `Context/*/`
+1. **Select area**: Glob `2. Areas/*/index.md` and `4. Context/*/`
 2. **Load existing context**: Read relevant area and context files
 3. **Determine topic**: Ask user what topic to capture (e.g., "physical fitness")
 4. **Ask 3-5 targeted questions** based on area type
 5. **Synthesize into bullets**: Convert answers to compact format
-6. **Write context file**: `Context/[Area]/[topic].md` (kebab-case filename)
+6. **Write context file**: `4. Context/[Area]/[topic].md` (kebab-case filename)
 
 ## Question Templates
 
@@ -63,7 +63,7 @@ source: interview
 
 Input: `/context-interview "Health"` -> Topic: "physical fitness"
 
-Created `Context/Health/physical-fitness.md`:
+Created `4. Context/Health/physical-fitness.md`:
 ```markdown
 # Physical Fitness
 

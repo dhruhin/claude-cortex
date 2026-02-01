@@ -3,7 +3,7 @@ name: route-journal
 description: Route personal reflections and daily entries to the journal. Use for daily logs, reflections, and personal notes.
 allowed-tools: Read, Write, Edit, Glob, Grep, Bash
 created: 2026-01-24T17:05
-updated: 2026-01-25T00:56
+updated: 2026-01-31T22:40
 ---
 
 # Route Journal
@@ -20,7 +20,7 @@ Routes journal entries and reflections to daily journal files.
 ## Steps
 
 1. **Determine date**: From inbox filename or today
-2. **Destination**: `Resources/Journal/YYYY/MM/DD.md`
+2. **Destination**: `3. Resources/Journal/YYYY/MM/DD.md`
 3. **Route**: Append to ## Notes (create file if needed)
 4. **Clean up**: Delete inbox file if applicable
 
