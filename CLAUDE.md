@@ -1,6 +1,6 @@
 ---
 created: 2026-01-24T12:31
-updated: 2026-01-31T18:46
+updated: 2026-01-31T22:42
 ---
 # Second Brain - Claude Instructions
 
@@ -79,7 +79,7 @@ Load `4. Context/` files when the topic is relevant:
 - Health/fitness -> `4. Context/Health/`
 - Career/work -> `4. Context/Career/`
 - A specific project -> that project's `CLAUDE.md`
-- A tracked person -> `5. People/[Name]/CONTEXT.md`
+- A tracked person -> `5. People/[Name]/CONTEXT.md` (use /create-person to add people)
 
 ## File Naming
 
@@ -139,4 +139,3 @@ Always suggest relevant `[[backlinks]]` when creating or processing content.
 ## Loose Notes
 
 - **Always run `date` for accurate time**: For any time-sensitive operations (timestamped files, execution logs, frontmatter timestamps, scheduling), run `date` first rather than relying on environment context. Accuracy is critical for vault organization.
-- **When in doubt, ask**: When routing tasks or making decisions with uncertainty, always ask the user rather than guessing. Prefer explicit confirmation over inferring intent.
