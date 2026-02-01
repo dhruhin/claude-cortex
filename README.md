@@ -1,6 +1,6 @@
 ---
 created: 2026-01-24T17:08
-updated: 2026-01-31T17:06
+updated: 2026-01-31T18:34
 ---
 # Claude Cortex
 
@@ -18,7 +18,7 @@ Claude Cortex provides:
 
 **Capture fast, process later.**
 
-- Dump raw thoughts into `Inbox/` or quick tasks into `Tasks.md`
+- Dump raw thoughts into `0. Inbox/` or quick tasks into `Tasks.md`
 - Run `/process` when convenient — Claude classifies and routes everything
 - Individual `/route-*` skills for direct routing
 - Auto-commit after changes keeps your vault safe
@@ -55,7 +55,7 @@ Claude Cortex provides:
 
 4. Create the directory structure:
    ```bash
-   mkdir -p Inbox Context Projects Areas "Resources/Journal" "Resources/Notes"
+   mkdir -p "0. Inbox" "1. Projects" "2. Areas" "3. Resources/Journal" "3. Resources/Notes" "4. Context" "5. People"
    ```
 
 5. Verify setup by running `/process` in Claude Code.
@@ -79,13 +79,14 @@ your-vault/
 ├── CLAUDE.md                         # Vault instructions
 ├── Tags.md                           # Tag registry
 ├── Tasks.md                          # Quick capture + task views
-├── Inbox/                            # Raw captures
-├── Context/                          # Personal context files
-├── Projects/                         # Active projects
-├── Areas/                            # Ongoing responsibilities
-└── Resources/
-    ├── Journal/                      # Daily notes
-    └── Notes/                        # Knowledge base (Johnny.Decimal)
+├── 0. Inbox/                         # Raw captures
+├── 1. Projects/                      # Active projects
+├── 2. Areas/                         # Ongoing responsibilities
+├── 3. Resources/
+│   ├── Journal/                      # Daily notes
+│   └── Notes/                        # Knowledge base (Johnny.Decimal)
+├── 4. Context/                       # Personal context files
+└── 5. People/                        # Person tracking
 ```
 
 ## Skills Reference
@@ -98,7 +99,7 @@ Orchestrator skill that processes all captured content.
 /process
 ```
 
-- Reads `Tasks.md` Capture section and all `Inbox/` files
+- Reads `Tasks.md` Capture section and all `0. Inbox/` files
 - Classifies each item (asks user if confidence < 70%)
 - Delegates to appropriate `/route-*` skill
 - Runs `/commit` to checkpoint changes
@@ -162,6 +163,40 @@ Commits vault changes to git with a descriptive message.
 /commit "Add meeting notes from standup"
 ```
 
+### `/remember`
+
+Saves user preferences to CLAUDE.md or skill files.
+
+```
+/remember "plans always go in plans/"
+/remember "route-task should ask about priority"
+```
+
+### `/setup`
+
+Guided wizard to bootstrap a new vault from scratch.
+
+```
+/setup
+```
+
+- Creates directory structure with numbered prefixes
+- Offers Johnny.Decimal presets (Personal, Work, Student, Creator)
+- Optionally initializes git
+
+### `/heal-cortex`
+
+Audits claude-cortex configuration for issues.
+
+```
+/heal-cortex
+/heal-cortex --skills
+```
+
+- Checks for verbosity, conflicts, stale info
+- Creates detailed-plan for fixes (never auto-fixes)
+- Generates health report
+
 ## Hooks
 
 Claude Cortex includes a Stop hook that commits changes when Claude finishes working:
@@ -215,10 +250,10 @@ The `related` field contains wiki-links to connected files: `["[[File1]]", "[[Fi
 
 ### Adding Context Files
 
-Create files in `Context/` for Claude to reference:
+Create files in `4. Context/` for Claude to reference:
 
 ```
-Context/
+4. Context/
 ├── Health/
 │   └── physical.md
 ├── Career/
@@ -230,7 +265,7 @@ Context/
 
 ### Johnny.Decimal Categories
 
-Customize note organization in `Resources/Notes/`:
+Customize note organization in `3. Resources/Notes/`:
 
 ```
 00-09 Relationships
