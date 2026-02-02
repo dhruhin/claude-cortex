@@ -1,6 +1,6 @@
 ---
 created: 2026-01-24T12:31
-updated: 2026-02-01T02:30
+updated: 2026-02-02T00:07
 ---
 # Second Brain - Claude Instructions
 
@@ -102,7 +102,6 @@ tags: []
 ## Planning
 
 - Save plans to `plans/` (gitignored, visible in Obsidian)
-- Open in Obsidian: `open -a "Obsidian" "/path/to/plan.md"`
 - **Assumptions**: Ask clarifying questions, suggest your preferred answer
 - Proceed with suggested approach unless corrected
 
