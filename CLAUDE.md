@@ -1,6 +1,6 @@
 ---
 created: 2026-01-24T12:31
-updated: 2026-02-02T00:07
+updated: 2026-02-02T00:48
 ---
 # Second Brain - Claude Instructions
 
@@ -104,6 +104,13 @@ tags: []
 - Save plans to `plans/` (gitignored, visible in Obsidian)
 - **Assumptions**: Ask clarifying questions, suggest your preferred answer
 - Proceed with suggested approach unless corrected
+
+## Planning Protocol
+
+- Use `/detailed-plan` for any non-trivial task (>1 step)
+- Auto-triggers when: multiple files, unclear requirements, architectural decisions, ambiguity detected
+- Interview-driven: ask questions to understand intent before proposing solutions
+- Default is to iterate: say "next" (or even just respond) to continue, "execute" when ready
 
 ## Internet Research
 
